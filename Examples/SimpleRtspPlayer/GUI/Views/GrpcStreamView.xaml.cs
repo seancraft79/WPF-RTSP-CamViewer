@@ -52,7 +52,7 @@ namespace SimpleRtspPlayer.GUI.Views
                 this.Dispatcher.Invoke(new Action(() =>
                 {
                     bool isMyChannel = streamData.Channel == CHANNEL;
-                    Console.WriteLine($"ImageData received {CHANNEL} ===> token : {receivedToken}, isChannel : {isThisToken}");
+                    //Console.WriteLine($"ImageData received {CHANNEL} ===> token : {receivedToken}, isChannel : {isThisToken}");
 
                     if (streamData != null && streamData.Image.Length > 0 && canStream && isMyChannel)
                     {
