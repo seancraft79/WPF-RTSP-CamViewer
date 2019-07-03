@@ -7,7 +7,7 @@ Set StartupUri to "GUI/Views/GrpcStreamWindow.xaml" in App.xaml
 ```
 or
 
-### For Camera streaming usig Grpc
+### For Camera streaming using Grpc
 ```
 Set StartupUri to "GUI/Views/GrpcStreamWindow.xaml" in App.xaml
 ```
