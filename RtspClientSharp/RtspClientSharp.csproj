@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>Kirill Bogdanov</Authors>
+    <RepositoryUrl>https://github.com/BogdanovKirill/RtspClientSharp</RepositoryUrl>
+    <PackageTags>rtsp, rtp, rtcp</PackageTags>
+    <Description>C# RTSP Client for .NET
+
+- Supported transport protocols: TCP/HTTP/UDP
+- Supported media codecs: H.264/MJPEG/AAC/G711A/G711U/PCM/G726
+- No external dependencies, pure C# code
+- Asynchronous nature with cancellation tokens support
+- Designed to be fast and scaleable
+- Low GC pressure during receive stage (when RTSP session is established); low amount of freezes under high load</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/BogdanovKirill/RtspClientSharp/master/LICENSE.md?raw=true</PackageLicenseUrl>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    <PackageIconUrl>https://github.com/BogdanovKirill/RtspClientSharp/blob/master/Images/package_icon.png?raw=true</PackageIconUrl>
+    <Copyright>Copyright ©2018 Kirill Bogdanov</Copyright>
+    <Version>1.2.4</Version>
+    <PackageReleaseNotes>-Small bug fix: QOP is not set in digest authenticator when it's value doesn't have comma</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <UpgradeBackupLocation>C:\PROJECTS\DOTNET\RtspClientSharp\Backup\RtspClientSharp\</UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\RtspClientSharp.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DocumentationFile>bin\Release\netstandard2.0\RtspClientSharp.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DocumentationFile>bin\Release\netstandard2.0\RtspClientSharp.xml</DocumentationFile>
+  </PropertyGroup>
+</Project>
