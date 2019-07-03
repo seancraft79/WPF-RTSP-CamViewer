@@ -1,5 +1,5 @@
 # WPF-RTSP-GRPC-Camera streaming
-RTSP stream camera viewer project
+RTSP GRPC streaming camera viewer project
 
 ### For RTSP camera streaming
 ```
