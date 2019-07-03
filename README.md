@@ -1,4 +1,4 @@
-# WPF-RTSP-CamViewer
+# WPF-RTSP-GRPC-CamViewer
 RTSP stream camera viewer project
 
 ### For RTSP camera streaming
