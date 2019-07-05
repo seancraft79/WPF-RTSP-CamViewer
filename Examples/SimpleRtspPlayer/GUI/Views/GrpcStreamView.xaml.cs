@@ -3,6 +3,7 @@ using GrpcStream;
 using Rtspstream;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,8 +20,8 @@ namespace SimpleRtspPlayer.GUI.Views
     public partial class GrpcStreamView : UserControl
     {
         private int CHANNEL = 0;
-        //const string HOST = "localhost";
-        const string HOST = "192.168.101.200";
+        const string HOST = "localhost";
+        //const string HOST = "192.168.101.200";
         //const string HOST = "223.171.38.179";
         const int PORT = 1004;
 
@@ -46,40 +47,7 @@ namespace SimpleRtspPlayer.GUI.Views
             string port = TxtPort.Text;
             var channel = new Channel($"{host}:{port}", ChannelCredentials.Insecure);
             client = new GrpcStreamClient(new Rtspstream.Rtspstream.RtspstreamClient(channel));
-
-            GrpcStreamClient.StreamReceieved += (Object sender, StreamData streamData) =>
-            {
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    bool isMyChannel = streamData.Channel == CHANNEL;
-                    //Console.WriteLine($"ImageData received {CHANNEL} ===> token : {receivedToken}, isChannel : {isThisToken}");
-
-                    if (streamData != null && streamData.Image.Length > 0 && canStream && isMyChannel)
-                    {
-                        var bitmapimg = new BitmapImage();
-                        using (var mem = new MemoryStream(streamData.Image.ToByteArray()))
-                        {
-                            mem.Position = 0;
-                            bitmapimg.BeginInit();
-                            bitmapimg.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                            bitmapimg.CacheOption = BitmapCacheOption.OnLoad;
-
-                            bitmapimg.UriSource = null;
-                            bitmapimg.StreamSource = mem;
-                            bitmapimg.EndInit();
-                        }
-                        bitmapimg.Freeze();
-                        if (bitmapimg != null)
-                        {
-                            Console.WriteLine($"     ===> received {CHANNEL} : len : {streamData.Image.Length},  width : {bitmapimg.PixelWidth}, hegith : {bitmapimg.PixelHeight}");
-                            StreamImage.Source = bitmapimg;
-                        }
-                        else Console.WriteLine("Iamge received NULL");
-                    }
-
-                }));
-            };
-
+            
             thread = new Thread(() =>
             {             
                 while (canStream)
@@ -87,7 +55,8 @@ namespace SimpleRtspPlayer.GUI.Views
                     try
                     {
                         Console.WriteLine($"<=== Get streamData {CHANNEL}");
-                        client.GetStreaming(new AuthToken() { Token = $"ct-" + DateTime.Now });
+                        var streamData = client.GetStreaming(new AuthToken() { Token = $"ct-" + DateTime.Now });
+                        OnStreamReceived(streamData);
                         //Thread.Sleep(FRAME_SLEEP);
                     }
                     catch (TaskCanceledException e)
@@ -113,6 +82,39 @@ namespace SimpleRtspPlayer.GUI.Views
             thread.Start();
 
             Console.WriteLine($"=====> StartStreaming [V_INDEX : {CHANNEL}], [CurrentThread : {Thread.CurrentThread.ManagedThreadId}], [Thread : {thread.ManagedThreadId}]");
+        }
+
+        void OnStreamReceived(StreamData streamData)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                bool isMyChannel = streamData.Channel == CHANNEL;
+                //Console.WriteLine($"ImageData received {CHANNEL} ===> token : {receivedToken}, isChannel : {isThisToken}");
+
+                if (streamData != null && streamData.Image.Length > 0 && canStream && isMyChannel)
+                {
+                    var bitmapimg = new BitmapImage();
+                    using (var mem = new MemoryStream(streamData.Image.ToByteArray()))
+                    {
+                        mem.Position = 0;
+                        bitmapimg.BeginInit();
+                        bitmapimg.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        bitmapimg.CacheOption = BitmapCacheOption.OnLoad;
+
+                        bitmapimg.UriSource = null;
+                        bitmapimg.StreamSource = mem;
+                        bitmapimg.EndInit();
+                    }
+                    bitmapimg.Freeze();
+                    if (bitmapimg != null)
+                    {
+                        Console.WriteLine($"     ===> received {CHANNEL} : len : {streamData.Image.Length},  width : {bitmapimg.PixelWidth}, hegith : {bitmapimg.PixelHeight}");
+                        StreamImage.Source = bitmapimg;
+                    }
+                    else Console.WriteLine("Iamge received NULL");
+                }
+
+            }));
         }
 
         private void StartButtonClicked(object sender, RoutedEventArgs e)
@@ -149,6 +151,21 @@ namespace SimpleRtspPlayer.GUI.Views
         {
             int result = -1;
             return int.TryParse(value, out result) ? result : defaultValue;
+        }
+
+        public class GrpcStreamClient
+        {
+            Rtspstream.Rtspstream.RtspstreamClient client;
+            public static EventHandler<byte[]> StreamReceieved { get; set; }
+            public GrpcStreamClient(Rtspstream.Rtspstream.RtspstreamClient client)
+            {
+                this.client = client;
+            }
+            
+            public StreamData GetStreaming(AuthToken token)
+            {
+                return client.GetStreaming(token);
+            }
         }
     }
 }
