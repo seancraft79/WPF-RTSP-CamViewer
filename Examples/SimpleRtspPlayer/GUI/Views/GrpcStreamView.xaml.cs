@@ -20,8 +20,8 @@ namespace SimpleRtspPlayer.GUI.Views
     {
         private int CHANNEL = 0;
         //const string HOST = "localhost";
-        //const string HOST = "192.168.7.6";
-        const string HOST = "223.171.38.179";
+        const string HOST = "192.168.101.200";
+        //const string HOST = "223.171.38.179";
         const int PORT = 1004;
 
         const int FRAME_SLEEP = 1;   // 30
@@ -71,7 +71,7 @@ namespace SimpleRtspPlayer.GUI.Views
                         bitmapimg.Freeze();
                         if (bitmapimg != null)
                         {
-                            Console.WriteLine($"===> received {CHANNEL} : len : {streamData.Image.Length},  width : {bitmapimg.PixelWidth}, hegith : {bitmapimg.PixelHeight}");
+                            Console.WriteLine($"     ===> received {CHANNEL} : len : {streamData.Image.Length},  width : {bitmapimg.PixelWidth}, hegith : {bitmapimg.PixelHeight}");
                             StreamImage.Source = bitmapimg;
                         }
                         else Console.WriteLine("Iamge received NULL");
@@ -86,9 +86,9 @@ namespace SimpleRtspPlayer.GUI.Views
                 {
                     try
                     {
-                        //Console.WriteLine($"<=== Get streamData {CHANNEL}");
+                        Console.WriteLine($"<=== Get streamData {CHANNEL}");
                         client.GetStreaming(new AuthToken() { Token = $"ct-" + DateTime.Now });
-                        Thread.Sleep(FRAME_SLEEP);
+                        //Thread.Sleep(FRAME_SLEEP);
                     }
                     catch (TaskCanceledException e)
                     {
@@ -102,7 +102,7 @@ namespace SimpleRtspPlayer.GUI.Views
                     {
                         Console.WriteLine(e.Message);
                     }
-                    catch(ThreadInterruptedException e)
+                    catch (ThreadInterruptedException e)
                     {
                         Console.WriteLine(e.Message);
                     }
