@@ -232,8 +232,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\GRPC-PROTOBUF\GrpcStream.csproj">
-      <Project>{ac57fdc3-7127-49dc-abc0-d1964d3637ec}</Project>
+    <ProjectReference Include="..\..\DotNet-Grpc-ProtoBuf\GrpcStream.csproj">
+      <Project>{1c4e3122-8ccd-4d43-b819-bc7d57a113cf}</Project>
       <Name>GrpcStream</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RtspClientSharp\RtspClientSharp.csproj">
